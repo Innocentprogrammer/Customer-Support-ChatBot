@@ -15,8 +15,8 @@ nltk.download('wordnet', quiet=True)
 # Initialize the lemmatizer
 lemmatizer = WordNetLemmatizer()
 
-# Load FAQ from JSON file
-with open('faq.json', 'r') as file:
+# Load categorized FAQ from JSON file
+with open('categorized_faq.json', 'r') as file:
     categorized_FAQ = json.load(file)
 
 # Flatten the FAQ for processing
