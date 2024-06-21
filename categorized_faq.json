@@ -50,5 +50,13 @@
         "What is the price of [product]?": "The price of [product] is [price].",
         "Do you offer discounts for bulk orders?": "Yes, we offer discounts for bulk orders. Contact our sales team for more information.",
         "Do you offer gift wrapping?": "Yes, we offer gift wrapping services for an additional fee."
+    },
+    "Service Information": {
+        "What services do you offer?": "We offer a variety of services, including consulting, maintenance, repairs, and more.",
+        "Can you tell me about your consulting services?": "Our consulting services cover a wide range of industries and expertise to help businesses succeed.",
+        "Can you tell me about your maintenance services?": "Our maintenance services ensure your equipment and systems are running smoothly and efficiently.",
+        "Can you tell me about your repair services?": "Our repair services fix and restore your products to optimal condition.",
+        "Do you offer training programs?": "Yes, we offer training programs to help you and your team develop new skills and knowledge.",
+        "Do you provide on-site support?": "Yes, we provide on-site support for installations, troubleshooting, and maintenance."
     }
 }
