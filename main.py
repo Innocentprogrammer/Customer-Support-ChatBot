@@ -17,7 +17,10 @@ lemmatizer = WordNetLemmatizer()
 
 # Load FAQ from JSON file
 with open('faq.json', 'r') as file:
-    FAQ = json.load(file)
+    categorized_FAQ = json.load(file)
+
+# Flatten the FAQ for processing
+FAQ = {question: answer for category in categorized_FAQ.values() for question, answer in category.items()}
 
 # Function to preprocess text
 def preprocess_text(text):
@@ -63,6 +66,22 @@ def send_message():
         chat_log.config(state=tk.DISABLED)
         entry.delete(0, tk.END)
 
+# Function to insert suggested question into entry box
+def insert_suggested_question(event):
+    selected_question = suggestions_listbox.get(suggestions_listbox.curselection())
+    entry.delete(0, tk.END)
+    entry.insert(0, selected_question)
+
+# Function to display questions of selected category
+def show_questions(event):
+    selection = category_listbox.curselection()
+    if selection:
+        selected_category = category_listbox.get(selection)
+        questions = categorized_FAQ[selected_category]
+        suggestions_listbox.delete(0, tk.END)
+        for question in questions:
+            suggestions_listbox.insert(tk.END, question)
+
 # Create GUI using Tkinter
 root = tk.Tk()
 root.title("Business Chatbot")
@@ -94,6 +113,26 @@ entry.pack(pady=10)
 # Send button
 send_button = tk.Button(root, text="Send", command=send_message)
 send_button.pack()
+
+# Category label
+category_label = tk.Label(root, text="Select a Category:")
+category_label.pack(pady=10)
+
+# Category listbox
+category_listbox = tk.Listbox(root, width=50, height=6)
+for category in categorized_FAQ:
+    category_listbox.insert(tk.END, category)
+category_listbox.pack(pady=10)
+category_listbox.bind('<<ListboxSelect>>', show_questions)
+
+# Suggestions label
+suggestions_label = tk.Label(root, text="Suggested Questions:")
+suggestions_label.pack(pady=10)
+
+# Suggestions listbox
+suggestions_listbox = tk.Listbox(root, width=50, height=10)
+suggestions_listbox.pack(pady=10)
+suggestions_listbox.bind('<<ListboxSelect>>', insert_suggested_question)
 
 # Start the chatbot
 root.mainloop()
