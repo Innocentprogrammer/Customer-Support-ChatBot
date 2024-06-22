@@ -6,6 +6,10 @@ from nltk.stem import WordNetLemmatizer
 import string
 import tkinter as tk
 from tkinter import scrolledtext
+from openai import OpenAI
+
+# Initialize OpenAI client
+client = OpenAI()
 
 # Download NLTK data if not already downloaded
 nltk.download('punkt', quiet=True)
@@ -21,6 +25,19 @@ with open('categorized_faq.json', 'r') as file:
 
 # Flatten the FAQ for processing
 FAQ = {question: answer for category in categorized_FAQ.values() for question, answer in category.items()}
+
+# Function to call OpenAI API
+def ask_openai(question):
+    completion = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": question}
+        ]
+    )
+    answer = completion.choices[0].message.content
+    print(f"Q: {question} | A: {answer}")
+    return answer
 
 # Function to preprocess text
 def preprocess_text(text):
@@ -48,7 +65,27 @@ def find_best_match(user_query):
     if best_match:
         return FAQ[best_match]
     else:
-        return "I'm sorry, I don't have an answer for that. Can you please provide more details?"
+        # Ask OpenAI API if no good match is found
+        new_answer = ask_openai(user_query)
+        # Update FAQ with the new question and answer
+        update_faq(user_query, new_answer)
+        return new_answer
+
+# Function to update the FAQ
+def update_faq(question, answer):
+    # Add to the flat FAQ
+    FAQ[question] = answer
+    # Find or create the category
+    category = "New Questions"
+    if category not in categorized_FAQ:
+        categorized_FAQ[category] = {}
+    categorized_FAQ[category][question] = answer
+    # Save to JSON file
+    with open('categorized_faq.json', 'w') as file:
+        json.dump(categorized_FAQ, file, indent=4)
+
+    # Update processed FAQ
+    processed_FAQ[question] = preprocess_text(question)
 
 # Function to send message
 def send_message():
