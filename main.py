@@ -5,16 +5,21 @@ from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 import string
 import tkinter as tk
+
 from tkinter import scrolledtext
-from openai import OpenAI
+import openai
+
+# Replace "your-api-key" with your actual OpenAI API key
+openai.api_key = "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"
 
 # Initialize OpenAI client
-client = OpenAI()
+client = openai
 
 # Download NLTK data if not already downloaded
 nltk.download('punkt', quiet=True)
 nltk.download('stopwords', quiet=True)
 nltk.download('wordnet', quiet=True)
+nltk.download('punkt_tab', quiet=True)
 
 # Initialize the lemmatizer
 lemmatizer = WordNetLemmatizer()
