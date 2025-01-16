@@ -10,8 +10,7 @@ from tkinter import scrolledtext
 import openai
 
 # Replace "your-api-key" with your actual OpenAI API key
-openai.api_key = "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"
-
+openai.api_key = "your api key"
 # Initialize OpenAI client
 client = openai
 
